@@ -1,7 +1,7 @@
 import React from "react";
 import BotsList from "./BotsList";
 import Navbar from "./Navbar";
-import categoryDetail from "./categoryDetail";
+import CategoryDetail from "./CategoryDetail";
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css'
