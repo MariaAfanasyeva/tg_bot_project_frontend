@@ -19,7 +19,7 @@ class categoryDetail extends Component {
         );
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
         if (prevProps.match.params.id !== this.props.match.params.id) {
             const id = this.props.match.params.id;
             fetch(`http://127.0.0.1:8000/api/category/${id}`).then(res => res.json()).then(
