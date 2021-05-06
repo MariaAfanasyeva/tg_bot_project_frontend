@@ -44,7 +44,8 @@ class Navbar extends Component {
                         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
                             <div className="navbar-nav">
                                 {categories.map(category => (
-                                    <Link className="nav-item nav-link" to={{pathname: `/category/${category.id}`, fromDashboard: false}}>{category.name}</Link>
+                                    <Link className="nav-item nav-link" to={{pathname: `/category/${category.id}`,
+                                        fromDashboard: false}}>{category.name}</Link>
                                 ))}
                             </div>
                         </div>

@@ -104,7 +104,8 @@ export default class BotsList extends Component {
                     <ul>
                         {items.map(item =>
                             <li key={item.id}>
-                                <a id={item.id} onClick={(event) => this.handleClick(item, event)}>{item.name}</a>
+                                <a id={item.id} onClick={(event) =>
+                                    this.handleClick(item, event)}>{item.name}</a>
                             </li>
                         )}
                     </ul>
@@ -120,10 +121,12 @@ export default class BotsList extends Component {
                     <ul>
                         {items.map((item) => ( (selectedItems.includes(item.id)) ?
                             <li id={item.name}>
-                                <a id={item.id} onClick={(event) => this.handleClick(item, event)}>{item.name}</a>
+                                <a id={item.id} onClick={(event) =>
+                                    this.handleClick(item, event)}>{item.name}</a>
                                 <p>{item.description}</p>
                             </li> : <li id={item.name}>
-                                <a id={item.id} onClick={(event) => this.handleClick(item, event)}>{item.name}</a>
+                                <a id={item.id} onClick={(event) =>
+                                    this.handleClick(item, event)}>{item.name}</a>
                             </li>
                         ))}
                     </ul>
