@@ -82,9 +82,34 @@ export default class BotsList extends Component {
     }
   }
   componentDidUpdate(prevProps) {
-    if (prevProps.match.params.id !== this.props.match.params.id) {
+    if (
+      prevProps.match.params.id !== this.props.match.params.id &&
+      this.props.match.params.id !== undefined
+    ) {
       const id = this.props.match.params.id;
       fetch(`http://127.0.0.1:8000/api/category/${id}/bots`)
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              isLoaded: true,
+              items: result.results,
+              prev_link: null,
+              next_link: result.next,
+            });
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error,
+            });
+          }
+        );
+    } else if (
+      prevProps.match.params.id !== this.props.match.params.id &&
+      this.props.match.params.id === undefined
+    ) {
+      fetch(`http://127.0.0.1:8000/api/bots`)
         .then((res) => res.json())
         .then(
           (result) => {
