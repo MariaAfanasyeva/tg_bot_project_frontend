@@ -7,7 +7,15 @@ class Navbar extends Component {
     this.state = {
       categories: [],
       error: null,
+      inputValue: "",
     };
+    this.updateInputValue = this.updateInputValue.bind(this);
+  }
+
+  updateInputValue(event) {
+    this.setState({
+      inputValue: event.target.value,
+    });
   }
 
   componentDidMount() {
@@ -71,6 +79,23 @@ class Navbar extends Component {
                 </Link>
               </div>
             </div>
+            <form className="form-inline">
+              <input
+                className="form-control mr-sm-2"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+                onChange={this.updateInputValue}
+              />
+              <Link to={{ pathname: `/bots/search=${this.state.inputValue}` }}>
+                <button
+                  className="btn btn-outline-success my-2 my-sm-0"
+                  type="submit"
+                >
+                  Search
+                </button>
+              </Link>
+            </form>
           </nav>
         </div>
       );

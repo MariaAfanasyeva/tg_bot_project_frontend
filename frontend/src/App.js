@@ -13,6 +13,7 @@ function App() {
         <Navbar />
         <Switch>
           <Route path="/category/:id/bots" exact component={BotsList} />
+          <Route path="/bots/search=:inputValue" exact component={BotsList} />
           <Route path="/" exact component={BotsList} />
           <Route path="/register" exact component={Register} />
         </Switch>
