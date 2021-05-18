@@ -128,7 +128,7 @@ export default class BotsList extends Component {
     } else if (
       prevProps.match.params !== this.props.match.params &&
       this.props.match.params.id === undefined &&
-      this.props.match.params.inputValue == undefined
+      this.props.match.params.inputValue === undefined
     ) {
       console.log("without id");
       fetch(`http://127.0.0.1:8000/api/bots`)

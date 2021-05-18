@@ -6,7 +6,6 @@ import Link from "@material-ui/core/Link";
 import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 function Copyright() {
@@ -22,36 +21,36 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(3),
-    backgroundColor: "#d04d4d",
-  },
-  form: {
-    width: "100%",
-    marginTop: theme.spacing(3),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
 export default class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      classes: useStyles,
       email: "",
       username: "",
       password: "",
     };
     this.updateInputValue = this.updateInputValue.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onSubmit(event) {
+    event.preventDefault();
+    const data = {
+      email: this.state.email,
+      username: this.state.username,
+      password: this.state.password,
+    };
+    console.log(data);
+    fetch("http://127.0.0.1:8000/auth/users/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then((res) => {
+      console.log(res);
+      this.props.history.push("/login");
+    });
   }
 
   updateInputValue(event) {
@@ -68,19 +67,17 @@ export default class Register extends Component {
         password: event.target.value,
       });
     }
-    console.log(this.state);
   }
 
   render() {
-    const classes = this.state.classes;
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <div className={classes.paper}>
+        <div>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <form className={classes.form} noValidate>
+          <form noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -125,7 +122,7 @@ export default class Register extends Component {
               fullWidth
               variant="contained"
               color="primary"
-              className={classes.submit}
+              onClick={this.onSubmit}
             >
               Sign Up
             </Button>

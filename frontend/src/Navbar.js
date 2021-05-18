@@ -77,6 +77,9 @@ class Navbar extends Component {
                 <Link to={{ pathname: "/register", fromDashboard: false }}>
                   Register
                 </Link>
+                <Link to={{ pathname: "/login", fromDashboard: false }}>
+                  Log In
+                </Link>
               </div>
             </div>
             <form className="form-inline">
