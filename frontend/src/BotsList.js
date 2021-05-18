@@ -40,8 +40,8 @@ export default class BotsList extends Component {
 
   componentDidMount() {
     const id = this.props.match.params.id;
-    console.log(id);
-    if (id === undefined) {
+    const inpVal = this.props.match.params.inputValue;
+    if (id === undefined || id === null) {
       fetch("http://127.0.0.1:8000/api/bots")
         .then((res) => res.json())
         .then(
@@ -60,8 +60,27 @@ export default class BotsList extends Component {
             });
           }
         );
-    } else {
+    } else if (id !== undefined) {
       fetch(`http://127.0.0.1:8000/api/category/${id}/bots`)
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              isLoaded: true,
+              items: result.results,
+              prev_link: null,
+              next_link: result.next,
+            });
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error,
+            });
+          }
+        );
+    } else {
+      fetch(`http://127.0.0.1:8000/api/bots?search=${inpVal}`)
         .then((res) => res.json())
         .then(
           (result) => {
@@ -86,6 +105,7 @@ export default class BotsList extends Component {
       prevProps.match.params.id !== this.props.match.params.id &&
       this.props.match.params.id !== undefined
     ) {
+      console.log("with id");
       const id = this.props.match.params.id;
       fetch(`http://127.0.0.1:8000/api/category/${id}/bots`)
         .then((res) => res.json())
@@ -106,10 +126,38 @@ export default class BotsList extends Component {
           }
         );
     } else if (
-      prevProps.match.params.id !== this.props.match.params.id &&
-      this.props.match.params.id === undefined
+      prevProps.match.params !== this.props.match.params &&
+      this.props.match.params.id === undefined &&
+      this.props.match.params.inputValue == undefined
     ) {
+      console.log("without id");
       fetch(`http://127.0.0.1:8000/api/bots`)
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              isLoaded: true,
+              items: result.results,
+              prev_link: null,
+              next_link: result.next,
+            });
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error,
+            });
+          }
+        );
+      console.log(this.props);
+    } else if (
+      prevProps.match.params.inputValue !==
+        this.props.match.params.inputValue &&
+      this.props.match.params.inputValue !== undefined
+    ) {
+      console.log("with search");
+      const inpVal = this.props.match.params.inputValue;
+      fetch(`http://127.0.0.1:8000/api/bots?search=${inpVal}`)
         .then((res) => res.json())
         .then(
           (result) => {
