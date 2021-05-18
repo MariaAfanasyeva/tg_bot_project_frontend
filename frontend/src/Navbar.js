@@ -66,6 +66,9 @@ class Navbar extends Component {
                     {category.name}
                   </Link>
                 ))}
+                <Link to={{ pathname: "/register", fromDashboard: false }}>
+                  Register
+                </Link>
               </div>
             </div>
           </nav>
