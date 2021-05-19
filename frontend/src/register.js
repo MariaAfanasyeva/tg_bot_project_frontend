@@ -7,6 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import { register } from "./api_fetch";
 
 function Copyright() {
   return (
@@ -28,6 +29,8 @@ export default class Register extends Component {
       email: "",
       username: "",
       password: "",
+      is_valid: true,
+      error_message: "",
     };
     this.updateInputValue = this.updateInputValue.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -40,17 +43,23 @@ export default class Register extends Component {
       username: this.state.username,
       password: this.state.password,
     };
-    console.log(data);
-    fetch("http://127.0.0.1:8000/auth/users/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      console.log(res);
-      this.props.history.push("/login");
-    });
+    register(data)
+      .then((res) => res.json())
+      .then((result) => {
+        const resultLength = Object.keys(result).length;
+        if (resultLength !== 3) {
+          this.setState({
+            is_valid: false,
+            error_message: result.email || result.username || result.password,
+          });
+          this.props.history.push("/register");
+        } else {
+          this.setState({
+            is_valid: true,
+          });
+          this.props.history.push("/login");
+        }
+      });
   }
 
   updateInputValue(event) {
@@ -70,6 +79,17 @@ export default class Register extends Component {
   }
 
   render() {
+    const { is_valid, error_message } = this.state;
+    let alert;
+    if (is_valid) {
+      alert = <div></div>;
+    } else if (!is_valid) {
+      alert = (
+        <div className="alert alert-danger" role="alert">
+          {error_message}
+        </div>
+      );
+    }
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -77,6 +97,7 @@ export default class Register extends Component {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+          {alert}
           <form noValidate>
             <Grid container spacing={2}>
               <Grid item xs={12}>

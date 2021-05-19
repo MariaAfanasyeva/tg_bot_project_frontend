@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import Logout from "./logout";
 
 class Navbar extends Component {
   constructor(props) {
@@ -80,6 +81,7 @@ class Navbar extends Component {
                 <Link to={{ pathname: "/login", fromDashboard: false }}>
                   Log In
                 </Link>
+                <Logout />
               </div>
             </div>
             <form className="form-inline">

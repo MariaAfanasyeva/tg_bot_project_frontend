@@ -8,6 +8,7 @@ import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
+import { login } from "./api_fetch";
 
 function Copyright() {
   return (
@@ -40,20 +41,8 @@ export default class SignIn extends Component {
       password: this.state.password,
     };
     console.log(data);
-    fetch("http://127.0.0.1:8000/api/token/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((result) => {
-        console.log(result);
-        localStorage.setItem("access_token", result.access);
-        localStorage.setItem("refresh_token", result.refresh);
-        this.props.history.push("/");
-      });
+    login(data);
+    this.props.history.push("/");
   }
 
   updateInputValue(event) {
