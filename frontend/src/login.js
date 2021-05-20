@@ -29,6 +29,8 @@ export default class SignIn extends Component {
     this.state = {
       username: "",
       password: "",
+      isValid: true,
+      errorMessage: "",
     };
     this.updateInputValue = this.updateInputValue.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -40,9 +42,23 @@ export default class SignIn extends Component {
       username: this.state.username,
       password: this.state.password,
     };
-    console.log(data);
-    login(data);
-    this.props.history.push("/");
+    login(data).then((result) => {
+      const resultLength = Object.keys(result).length;
+      if (resultLength === 2) {
+        this.setState({
+          isValid: true,
+        });
+        localStorage.setItem("access_token", result.access);
+        localStorage.setItem("refresh_token", result.refresh);
+        this.props.history.push("/");
+      } else {
+        this.setState({
+          isValid: false,
+          errorMessage: result.detail,
+        });
+        this.props.history.push("/login");
+      }
+    });
   }
 
   updateInputValue(event) {
@@ -57,6 +73,17 @@ export default class SignIn extends Component {
     }
   }
   render() {
+    const { isValid, errorMessage } = this.state;
+    let alert;
+    if (isValid) {
+      alert = <div></div>;
+    } else if (!isValid) {
+      alert = (
+        <div className="alert alert-danger" role="alert">
+          {errorMessage}
+        </div>
+      );
+    }
     return (
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -64,6 +91,7 @@ export default class SignIn extends Component {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          {alert}
           <form>
             <TextField
               variant="outlined"

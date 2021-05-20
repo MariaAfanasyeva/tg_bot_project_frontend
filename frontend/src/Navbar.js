@@ -75,15 +75,21 @@ class Navbar extends Component {
                     {category.name}
                   </Link>
                 ))}
-                <Link to={{ pathname: "/register", fromDashboard: false }}>
-                  Register
-                </Link>
-                <Link to={{ pathname: "/login", fromDashboard: false }}>
-                  Log In
-                </Link>
-                <Logout />
               </div>
             </div>
+            <Link
+              className="nav-item nav-link"
+              to={{ pathname: "/register", fromDashboard: false }}
+            >
+              Register
+            </Link>
+            <Link
+              className="nav-item nav-link"
+              to={{ pathname: "/login", fromDashboard: false }}
+            >
+              Log In
+            </Link>
+            <Logout />
             <form className="form-inline">
               <input
                 className="form-control mr-sm-2"

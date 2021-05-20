@@ -9,13 +9,9 @@ export const login = (data) => {
     mode: "cors",
     body: JSON.stringify(data),
   };
-  return fetch("http://127.0.0.1:8000/api/token/", options)
-    .then((res) => res.json())
-    .then((result) => {
-      console.log(result);
-      localStorage.setItem("access_token", result.access);
-      localStorage.setItem("refresh_token", result.refresh);
-    });
+  return fetch("http://127.0.0.1:8000/api/token/", options).then((res) =>
+    res.json()
+  );
 };
 
 export const register = (data) => {
@@ -45,7 +41,6 @@ const refresh = () => {
   return fetch("http://127.0.0.1:8000/api/token/refresh/", options)
     .then((res) => res.json())
     .then((result) => {
-      console.log(result);
       localStorage.setItem("access_token", result.access);
     });
 };
@@ -55,7 +50,6 @@ export const api = (method, url, login_required) => {
     const token = localStorage.getItem("access_token");
     const decodedToken = jwt.decode(token);
     let dateNow = new Date();
-    console.log(decodedToken.exp, dateNow.getTime() / 1000);
     if (decodedToken.exp < dateNow.getTime() / 1000) {
       refresh();
     }
