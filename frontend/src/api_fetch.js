@@ -1,49 +1,5 @@
 import jwt from "jsonwebtoken";
-
-export const login = (data) => {
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    mode: "cors",
-    body: JSON.stringify(data),
-  };
-  return fetch("http://127.0.0.1:8000/api/token/", options).then((res) =>
-    res.json()
-  );
-};
-
-export const register = (data) => {
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    mode: "cors",
-    body: JSON.stringify(data),
-  };
-  return fetch("http://127.0.0.1:8000/auth/users/", options);
-};
-
-const refresh = () => {
-  const data = {
-    refresh: localStorage.getItem("refresh_token"),
-  };
-  const options = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    mode: "cors",
-    body: JSON.stringify(data),
-  };
-  return fetch("http://127.0.0.1:8000/api/token/refresh/", options)
-    .then((res) => res.json())
-    .then((result) => {
-      localStorage.setItem("access_token", result.access);
-    });
-};
+import { refresh } from "./refresh_api";
 
 export const api = (method, url, login_required) => {
   if (localStorage.getItem("access_token") !== null) {

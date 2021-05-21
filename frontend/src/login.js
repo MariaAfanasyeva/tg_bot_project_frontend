@@ -4,24 +4,11 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Link from "@material-ui/core/Link";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { login } from "./api_fetch";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { login } from "./login_api";
+import Copyright from "./Copyright";
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -43,8 +30,7 @@ export default class SignIn extends Component {
       password: this.state.password,
     };
     login(data).then((result) => {
-      const resultLength = Object.keys(result).length;
-      if (resultLength === 2) {
+      if (result.detail === undefined) {
         this.setState({
           isValid: true,
         });
