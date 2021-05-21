@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { api } from "./api_fetch";
 
 export default class BotsList extends Component {
   constructor(props) {
@@ -42,7 +43,8 @@ export default class BotsList extends Component {
     const id = this.props.match.params.id;
     const inpVal = this.props.match.params.inputValue;
     if (id === undefined || id === null) {
-      fetch("http://127.0.0.1:8000/api/bots")
+      let url = "http://127.0.0.1:8000/api/bots";
+      api("GET", url, false)
         .then((res) => res.json())
         .then(
           (result) => {
@@ -61,7 +63,8 @@ export default class BotsList extends Component {
           }
         );
     } else if (id !== undefined) {
-      fetch(`http://127.0.0.1:8000/api/category/${id}/bots`)
+      let url = `http://127.0.0.1:8000/api/category/${id}/bots`;
+      api("GET", url, true)
         .then((res) => res.json())
         .then(
           (result) => {
@@ -80,7 +83,8 @@ export default class BotsList extends Component {
           }
         );
     } else {
-      fetch(`http://127.0.0.1:8000/api/bots?search=${inpVal}`)
+      let url = `http://127.0.0.1:8000/api/bots?search=${inpVal}`;
+      api("GET", url, false)
         .then((res) => res.json())
         .then(
           (result) => {
@@ -107,10 +111,12 @@ export default class BotsList extends Component {
     ) {
       console.log("with id");
       const id = this.props.match.params.id;
-      fetch(`http://127.0.0.1:8000/api/category/${id}/bots`)
+      let url = `http://127.0.0.1:8000/api/category/${id}/bots`;
+      api("GET", url, true)
         .then((res) => res.json())
         .then(
           (result) => {
+            console.log(result);
             this.setState({
               isLoaded: true,
               items: result.results,
@@ -128,10 +134,11 @@ export default class BotsList extends Component {
     } else if (
       prevProps.match.params !== this.props.match.params &&
       this.props.match.params.id === undefined &&
-      this.props.match.params.inputValue == undefined
+      this.props.match.params.inputValue === undefined
     ) {
       console.log("without id");
-      fetch(`http://127.0.0.1:8000/api/bots`)
+      let url = `http://127.0.0.1:8000/api/bots`;
+      api("GET", url, false)
         .then((res) => res.json())
         .then(
           (result) => {
@@ -157,7 +164,9 @@ export default class BotsList extends Component {
     ) {
       console.log("with search");
       const inpVal = this.props.match.params.inputValue;
-      fetch(`http://127.0.0.1:8000/api/bots?search=${inpVal}`)
+      let url = `http://127.0.0.1:8000/api/bots?search=${inpVal}`;
+      // fetch(`http://127.0.0.1:8000/api/bots?search=${inpVal}`)
+      api("GET", url, false)
         .then((res) => res.json())
         .then(
           (result) => {
