@@ -8,6 +8,7 @@ class Logout extends Component {
   handleClick() {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    this.props.updateData(false);
   }
   render() {
     return (

@@ -30,6 +30,11 @@ class Navbar extends Component {
       isAuthenticatedUser: false,
     });
   }
+  updateData = (value) => {
+    this.setState({
+      isAuthenticatedUser: value
+    });
+  }
 
   componentDidMount() {
     if (localStorage.getItem("access_token")) {
@@ -64,14 +69,16 @@ class Navbar extends Component {
         }
       );
   }
+
   componentDidUpdate(prevState) {
-    if (prevState.isAuthenticatedUser !== this.state.isAuthenticatedUser) {
-      console.log("aaaa");
-      console.log(this.props);
+    if(prevState.isAuthenticatedUser !== this.state.isAuthenticatedUser){
+      console.log(this.state);
     }
+
   }
 
   render() {
+    console.log(this.state);
     const {
       error,
       categories,
@@ -145,7 +152,7 @@ class Navbar extends Component {
               </Link>
               <Link
                 className="nav-item nav-link"
-                to={{ pathname: "/login", fromDashboard: false }}
+                to={{ pathname: "/login", fromDashboard: false, updateData: this.updateData }}
                 is_auth={false}
               >
                 Log In
@@ -218,7 +225,7 @@ class Navbar extends Component {
                 Welcome, {currentUserName}
               </Link>
               <div onClick={this.handleLogOut}>
-                <Logout />
+                <Logout updateData={this.updateData}/>
               </div>
             </nav>
           </div>

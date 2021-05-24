@@ -45,6 +45,7 @@ export default class SignIn extends Component {
         this.props.history.push("/login");
       }
     });
+    this.props.location.updateData(true);
   }
 
   updateInputValue(event) {
