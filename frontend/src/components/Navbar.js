@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Logout from "./logout";
+import Logout from "../auth/logout";
 import jwt from "jsonwebtoken";
-import { api } from "./api_fetch";
+import { api } from "../api/api_fetch";
 
 class Navbar extends Component {
   constructor(props) {
@@ -68,13 +68,6 @@ class Navbar extends Component {
           });
         }
       );
-  }
-
-  componentDidUpdate(prevState) {
-    if(prevState.isAuthenticatedUser !== this.state.isAuthenticatedUser){
-      console.log(this.state);
-    }
-
   }
 
   render() {

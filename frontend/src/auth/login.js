@@ -7,8 +7,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { login } from "./login_api";
-import Copyright from "./Copyright";
+import { login } from "../api/login_api";
+import Copyright from "../Copyright";
 
 export default class SignIn extends Component {
   constructor(props) {

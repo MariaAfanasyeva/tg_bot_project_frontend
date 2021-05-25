@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { api } from "./api_fetch";
+import { api } from "../api/api_fetch";
 
 export default class BotsList extends Component {
   constructor(props) {
@@ -165,7 +165,6 @@ export default class BotsList extends Component {
       console.log("with search");
       const inpVal = this.props.match.params.inputValue;
       let url = `http://127.0.0.1:8000/api/bots?search=${inpVal}`;
-      // fetch(`http://127.0.0.1:8000/api/bots?search=${inpVal}`)
       api("GET", url, false)
         .then((res) => res.json())
         .then(
