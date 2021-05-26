@@ -31,12 +31,13 @@ export default class SignIn extends Component {
     };
     login(data).then((result) => {
       if (result.detail === undefined) {
+        localStorage.setItem("access_token", result.access);
+        localStorage.setItem("refresh_token", result.refresh);
         this.setState({
           isValid: true,
         });
-        localStorage.setItem("access_token", result.access);
-        localStorage.setItem("refresh_token", result.refresh);
         this.props.history.push("/");
+        this.props.location.updateData(true);
       } else {
         this.setState({
           isValid: false,
@@ -45,7 +46,6 @@ export default class SignIn extends Component {
         this.props.history.push("/login");
       }
     });
-    this.props.location.updateData(true);
   }
 
   updateInputValue(event) {

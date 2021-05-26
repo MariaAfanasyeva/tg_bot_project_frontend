@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { refresh } from "./refresh_api";
 
-export const api = (method, url, login_required) => {
+export const api = (method, url, login_required, data = null) => {
   if (localStorage.getItem("access_token") !== null) {
     const token = localStorage.getItem("access_token");
     const decodedToken = jwt.decode(token);
@@ -17,22 +17,47 @@ export const api = (method, url, login_required) => {
       : null;
   let options = "";
   if (login_required === true) {
-    options = {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: access_token,
-      },
-      mode: "cors",
-    };
+    if (method === "GET") {
+      options = {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: access_token,
+        },
+        mode: "cors",
+      };
+    } else {
+      options = {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: access_token,
+        },
+        mode: "cors",
+        body: JSON.stringify(data),
+      };
+    }
   } else {
-    options = {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "cors",
-    };
+    if (method === "GET") {
+      options = {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: access_token,
+        },
+        mode: "cors",
+      };
+    } else {
+      options = {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: access_token,
+        },
+        mode: "cors",
+        body: JSON.stringify(data),
+      };
+    }
   }
   return fetch(url, options);
 };

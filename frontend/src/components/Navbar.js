@@ -32,9 +32,9 @@ class Navbar extends Component {
   }
   updateData = (value) => {
     this.setState({
-      isAuthenticatedUser: value
+      isAuthenticatedUser: value,
     });
-  }
+  };
 
   componentDidMount() {
     if (localStorage.getItem("access_token")) {
@@ -46,18 +46,16 @@ class Navbar extends Component {
         .then((result) => {
           this.setState({
             currentUserName: result.username,
-            currentUserUD: result.id,
+            currentUserID: result.id,
             isAuthenticatedUser: true,
           });
         });
     }
-    console.log(this.props);
     const url = "http://127.0.0.1:8000/api/category";
     api("GET", url, false)
       .then((res) => res.json())
       .then(
         (result) => {
-          console.log(result);
           this.setState({
             categories: result,
           });
@@ -69,14 +67,31 @@ class Navbar extends Component {
         }
       );
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.isAuthenticatedUser !== this.state.isAuthenticatedUser) {
+      if (localStorage.getItem("access_token")) {
+        const token = localStorage.getItem("access_token");
+        const decodedToken = jwt.decode(token);
+        const url = `http://127.0.0.1:8000/api/user/${decodedToken.user_id}/info`;
+        api("GET", url, false)
+          .then((res) => res.json())
+          .then((result) => {
+            this.setState({
+              currentUserName: result.username,
+              currentUserID: result.id,
+              isAuthenticatedUser: true,
+            });
+          });
+      }
+    }
+  }
 
   render() {
-    console.log(this.state);
     const {
       error,
       categories,
       currentUserName,
-      currentUserUD,
+      currentUserID,
       isAuthenticatedUser,
     } = this.state;
     if (error) {
@@ -145,7 +160,11 @@ class Navbar extends Component {
               </Link>
               <Link
                 className="nav-item nav-link"
-                to={{ pathname: "/login", fromDashboard: false, updateData: this.updateData }}
+                to={{
+                  pathname: "/login",
+                  fromDashboard: false,
+                  updateData: this.updateData,
+                }}
                 is_auth={false}
               >
                 Log In
@@ -211,15 +230,17 @@ class Navbar extends Component {
               <Link
                 className="nav-item nav-link"
                 to={{
-                  pathname: `/user/${currentUserUD}/info`,
+                  pathname: `/user/${currentUserID}/info`,
                   fromDashboard: false,
                 }}
               >
                 Welcome, {currentUserName}
               </Link>
-              <div onClick={this.handleLogOut}>
-                <Logout updateData={this.updateData}/>
-              </div>
+              <Link to={{ pathname: "/" }}>
+                <div onClick={this.handleLogOut}>
+                  <Logout updateData={this.updateData} />
+                </div>
+              </Link>
             </nav>
           </div>
         );
