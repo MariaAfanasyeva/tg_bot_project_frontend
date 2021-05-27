@@ -22,6 +22,7 @@ function App() {
           <Route path="/login" exact component={SignIn} />
           <Route path="/user/:id/info" exact component={UserPage} />
           <Route path="/user/:id/create/bot" exact component={Create} />
+          <Route path="/user/:id/update/bot/:bot_id" exact component={Create} />
         </Switch>
       </Router>
     </div>
