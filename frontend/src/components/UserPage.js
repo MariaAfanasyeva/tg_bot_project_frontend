@@ -19,7 +19,7 @@ export default class UserPage extends Component {
   }
   handleDelete(bot_id) {
     const urlDel = `http://127.0.0.1:8000/api/delete/${bot_id}`;
-    api("DELETE", urlDel, false).then((res) => {
+    api("DELETE", urlDel, true).then((res) => {
       if (res.ok === true) {
         this.setState({
           deleted: true,

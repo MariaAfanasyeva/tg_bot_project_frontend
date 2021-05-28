@@ -47,12 +47,14 @@ export default class Create extends Component {
     };
     if (this.state.creation === true) {
       const url = "http://127.0.0.1:8000/api/create";
-      api("POST", url, true, data).then((result) => {
-        this.props.history.push(`/user/${this.state.userId}/info`);
-      });
+      api("POST", url, true, data)
+        .then((res) => res.json())
+        .then((result) => {
+          this.props.history.push(`/user/${this.state.userId}/info`);
+        });
     } else {
       const url = `http://127.0.0.1:8000/api/update/${this.state.bot_id}`;
-      api("PUT", url, false, data).then((result) => {
+      api("PUT", url, true, data).then((result) => {
         this.props.history.push(`/user/${this.state.userId}/info`);
       });
     }
@@ -91,6 +93,27 @@ export default class Create extends Component {
       this.setState({
         userId: userId,
       });
+    }
+    if (this.state.modification === true) {
+      const url = `http://127.0.0.1:8000/api/detail/${this.state.bot_id}`;
+      api("GET", url, false)
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            this.setState({
+              name: result.name,
+              category: result.category,
+              description: result.description,
+              author: result.author,
+              link: result.link,
+            });
+          },
+          (error) => {
+            this.setState({
+              error,
+            });
+          }
+        );
     }
     api("GET", url, false)
       .then((res) => res.json())
@@ -140,9 +163,10 @@ export default class Create extends Component {
                 id="category"
                 onChange={this.updateInputValue}
               >
-                {categories.map((category) => (
-                  <option>{category.name}</option>
-                ))}
+                <option></option>
+                {categories.map((category) => {
+                  return <option value={category.name}>{category.name}</option>;
+                })}
               </select>
             </div>
             <div className="form-group">
@@ -187,6 +211,7 @@ export default class Create extends Component {
                 id="name"
                 placeholder="bot name"
                 onChange={this.updateInputValue}
+                value={this.state.name}
               />
             </div>
             <div className="form-group">
@@ -196,6 +221,7 @@ export default class Create extends Component {
                 id="description"
                 rows="3"
                 onChange={this.updateInputValue}
+                value={this.state.description}
               ></textarea>
             </div>
             <div className="form-group">
@@ -204,10 +230,12 @@ export default class Create extends Component {
                 className="form-control"
                 id="category"
                 onChange={this.updateInputValue}
+                value={this.state.category}
               >
-                {categories.map((category) => (
-                  <option>{category.name}</option>
-                ))}
+                <option></option>
+                {categories.map((category) => {
+                  return <option value={category.name}>{category.name}</option>;
+                })}
               </select>
             </div>
             <div className="form-group">
@@ -218,6 +246,7 @@ export default class Create extends Component {
                 id="author"
                 placeholder="bot author"
                 onChange={this.updateInputValue}
+                value={this.state.author}
               />
             </div>
             <div className="form-group">
@@ -228,6 +257,7 @@ export default class Create extends Component {
                 id="link"
                 placeholder="https://t.me/your_bot"
                 onChange={this.updateInputValue}
+                value={this.state.link}
               />
             </div>
             <button
