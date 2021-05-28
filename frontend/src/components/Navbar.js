@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Logout from "../auth/logout";
+import Logout from "../auth/Logout";
 import jwt from "jsonwebtoken";
-import { api } from "../api/api_fetch";
+import { api } from "../api/ApiFetch";
 
 class Navbar extends Component {
   constructor(props) {

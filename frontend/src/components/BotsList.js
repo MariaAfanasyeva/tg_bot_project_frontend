@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { api } from "../api/api_fetch";
+import { api } from "../api/ApiFetch";
 
 export default class BotsList extends Component {
   constructor(props) {

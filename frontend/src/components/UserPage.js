@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { api } from "../api/api_fetch";
+import { api } from "../api/ApiFetch";
 import { Link } from "react-router-dom";
 
 export default class UserPage extends Component {

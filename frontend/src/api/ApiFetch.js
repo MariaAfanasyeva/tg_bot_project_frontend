@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { refresh } from "./refresh_api";
+import { refresh } from "./RefreshApi";
 
 export const api = (method, url, login_required, data = null) => {
   if (localStorage.getItem("access_token") !== null) {
