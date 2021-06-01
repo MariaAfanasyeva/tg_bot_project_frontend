@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { api } from "../api/ApiFetch";
+import { api } from "../api/apiFetch";
 import { Link } from "react-router-dom";
 
 export default class UserPage extends Component {
@@ -46,7 +46,6 @@ export default class UserPage extends Component {
   }
 
   componentDidMount() {
-    console.log("mount");
     const userId = this.props.match.params.id;
     const url = `http://127.0.0.1:8000/api/user/${userId}/bots`;
     api("GET", url, false)

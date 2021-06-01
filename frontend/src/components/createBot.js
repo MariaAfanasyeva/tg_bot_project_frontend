@@ -1,36 +1,19 @@
 import React, { Component } from "react";
-import { api } from "../api/ApiFetch";
+import { api } from "../api/apiFetch";
 import jwt from "jsonwebtoken";
 
 export default class Create extends Component {
   constructor(props) {
     super(props);
-    if (this.props.match.params.bot_id !== undefined) {
-      this.state = {
-        categories: [],
-        name: "",
-        category: "",
-        description: "",
-        author: "",
-        link: "",
-        userId: "",
-        creation: false,
-        modification: true,
-        bot_id: this.props.match.params.bot_id,
-      };
-    } else {
-      this.state = {
-        categories: [],
-        name: "",
-        category: "",
-        description: "",
-        author: "",
-        link: "",
-        userId: "",
-        creation: true,
-        modification: false,
-      };
-    }
+    this.state = {
+      categories: [],
+      name: "",
+      category: "",
+      description: "",
+      author: "",
+      link: "",
+      userId: "",
+    };
 
     this.updateInputValue = this.updateInputValue.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -45,7 +28,7 @@ export default class Create extends Component {
       author: this.state.author,
       link: this.state.link,
     };
-    if (this.state.creation === true) {
+    if (!this.props.match.params.bot_id) {
       const url = "http://127.0.0.1:8000/api/create";
       api("POST", url, true, data)
         .then((res) => res.json())
@@ -53,7 +36,7 @@ export default class Create extends Component {
           this.props.history.push(`/user/${this.state.userId}/info`);
         });
     } else {
-      const url = `http://127.0.0.1:8000/api/update/${this.state.bot_id}`;
+      const url = `http://127.0.0.1:8000/api/update/${this.props.match.params.bot_id}`;
       api("PUT", url, true, data).then((result) => {
         this.props.history.push(`/user/${this.state.userId}/info`);
       });
@@ -94,8 +77,8 @@ export default class Create extends Component {
         userId: userId,
       });
     }
-    if (this.state.modification === true) {
-      const url = `http://127.0.0.1:8000/api/detail/${this.state.bot_id}`;
+    if (this.props.match.params.bot_id) {
+      const url = `http://127.0.0.1:8000/api/detail/${this.props.match.params.bot_id}`;
       api("GET", url, false)
         .then((res) => res.json())
         .then(
@@ -132,8 +115,9 @@ export default class Create extends Component {
   }
 
   render() {
-    const { categories, creation, modification } = this.state;
-    if (creation === true) {
+    const { categories } = this.state;
+    const bot_id = this.props.match.params.bot_id;
+    if (!bot_id) {
       return (
         <div className="container">
           <form>
@@ -199,7 +183,7 @@ export default class Create extends Component {
           </form>
         </div>
       );
-    } else if (modification === true) {
+    } else {
       return (
         <div className="container">
           <form>

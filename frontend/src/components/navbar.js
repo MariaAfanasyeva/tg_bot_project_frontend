@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Logout from "../auth/Logout";
+import Logout from "../auth/logout";
 import jwt from "jsonwebtoken";
-import { api } from "../api/ApiFetch";
+import { api } from "../api/apiFetch";
+import { refresh } from "../api/refreshApi";
 
 class Navbar extends Component {
   constructor(props) {
@@ -40,23 +41,26 @@ class Navbar extends Component {
     if (localStorage.getItem("access_token")) {
       const token = localStorage.getItem("access_token");
       const decodedToken = jwt.decode(token);
-      const url = `http://127.0.0.1:8000/api/user/${decodedToken.user_id}/info`;
-      api("GET", url, false)
-        .then((res) => res.json())
-        .then((result) => {
-          this.setState({
-            currentUserName: result.username,
-            currentUserID: result.id,
-            isAuthenticatedUser: true,
+      if (token === "undefined") {
+        refresh();
+      } else {
+        const url = `http://127.0.0.1:8000/api/user/${decodedToken.user_id}/info`;
+        api("GET", url, false)
+          .then((res) => res.json())
+          .then((result) => {
+            this.setState({
+              currentUserName: result.username,
+              currentUserID: result.id,
+              isAuthenticatedUser: true,
+            });
           });
-        });
+      }
     }
     const url = "http://127.0.0.1:8000/api/category";
     api("GET", url, false)
       .then((res) => res.json())
       .then(
         (result) => {
-          console.log(result);
           this.setState({
             categories: result,
           });
