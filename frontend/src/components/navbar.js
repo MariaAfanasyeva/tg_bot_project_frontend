@@ -159,7 +159,11 @@ class Navbar extends Component {
               </form>
               <Link
                 className="nav-item nav-link"
-                to={{ pathname: "/register", fromDashboard: false }}
+                to={{
+                  pathname: "/register",
+                  fromDashboard: false,
+                  updateData: this.updateData,
+                }}
               >
                 Register
               </Link>

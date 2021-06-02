@@ -36,8 +36,8 @@ export default class SignIn extends Component {
         this.setState({
           isValid: true,
         });
-        this.props.history.push("/");
         this.props.location.updateData(true);
+        this.props.history.push("/");
       } else {
         this.setState({
           isValid: false,
@@ -59,6 +59,7 @@ export default class SignIn extends Component {
       });
     }
   }
+
   render() {
     const { isValid, errorMessage } = this.state;
     let alert;

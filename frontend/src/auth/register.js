@@ -45,7 +45,10 @@ export default class Register extends Component {
           this.setState({
             is_valid: true,
           });
-          this.props.history.push("/login");
+          this.props.history.push({
+            pathname: "/login",
+            updateData: this.props.location.updateData,
+          });
         }
       });
   }
