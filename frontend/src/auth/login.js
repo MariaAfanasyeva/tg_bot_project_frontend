@@ -7,8 +7,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
-import { login } from "./login_api";
-import Copyright from "./Copyright";
+import { login } from "../api/loginApi";
+import Copyright from "../Copyright";
 
 export default class SignIn extends Component {
   constructor(props) {
@@ -31,11 +31,12 @@ export default class SignIn extends Component {
     };
     login(data).then((result) => {
       if (result.detail === undefined) {
+        localStorage.setItem("access_token", result.access);
+        localStorage.setItem("refresh_token", result.refresh);
         this.setState({
           isValid: true,
         });
-        localStorage.setItem("access_token", result.access);
-        localStorage.setItem("refresh_token", result.refresh);
+        this.props.location.updateData(true);
         this.props.history.push("/");
       } else {
         this.setState({
@@ -58,6 +59,7 @@ export default class SignIn extends Component {
       });
     }
   }
+
   render() {
     const { isValid, errorMessage } = this.state;
     let alert;

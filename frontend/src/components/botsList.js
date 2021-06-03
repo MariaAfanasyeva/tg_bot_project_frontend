@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { api } from "./api_fetch";
+import { api } from "../api/apiFetch";
 
 export default class BotsList extends Component {
   constructor(props) {
@@ -109,14 +109,12 @@ export default class BotsList extends Component {
       prevProps.match.params.id !== this.props.match.params.id &&
       this.props.match.params.id !== undefined
     ) {
-      console.log("with id");
       const id = this.props.match.params.id;
       let url = `http://127.0.0.1:8000/api/category/${id}/bots`;
       api("GET", url, true)
         .then((res) => res.json())
         .then(
           (result) => {
-            console.log(result);
             this.setState({
               isLoaded: true,
               items: result.results,
@@ -136,7 +134,6 @@ export default class BotsList extends Component {
       this.props.match.params.id === undefined &&
       this.props.match.params.inputValue === undefined
     ) {
-      console.log("without id");
       let url = `http://127.0.0.1:8000/api/bots`;
       api("GET", url, false)
         .then((res) => res.json())
@@ -156,16 +153,13 @@ export default class BotsList extends Component {
             });
           }
         );
-      console.log(this.props);
     } else if (
       prevProps.match.params.inputValue !==
         this.props.match.params.inputValue &&
       this.props.match.params.inputValue !== undefined
     ) {
-      console.log("with search");
       const inpVal = this.props.match.params.inputValue;
       let url = `http://127.0.0.1:8000/api/bots?search=${inpVal}`;
-      // fetch(`http://127.0.0.1:8000/api/bots?search=${inpVal}`)
       api("GET", url, false)
         .then((res) => res.json())
         .then(

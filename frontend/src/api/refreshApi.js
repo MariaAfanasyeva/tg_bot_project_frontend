@@ -1,6 +1,10 @@
 export const refresh = () => {
+  const refresh_token = localStorage.getItem("refresh_token");
+  if (!refresh_token) {
+    this.props.history.push("/login");
+  }
   const data = {
-    refresh: localStorage.getItem("refresh_token"),
+    refresh: refresh_token,
   };
   const options = {
     method: "POST",
