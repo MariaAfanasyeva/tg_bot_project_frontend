@@ -6,12 +6,13 @@ import SignIn from "./auth/login";
 import UserPage from "./components/userPage";
 import Create from "./components/createBot";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import BotPage from "./components/botPage";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   return (
-    <div className="App">
+    <div className="App h-100 w-100">
       <Router>
         <Navbar />
         <Switch>
@@ -23,6 +24,7 @@ function App() {
           <Route path="/user/:id/info" exact component={UserPage} />
           <Route path="/user/:id/create/bot" exact component={Create} />
           <Route path="/user/:id/update/bot/:bot_id" exact component={Create} />
+          <Route path="/bot/:id/detail" exact component={BotPage} />
         </Switch>
       </Router>
     </div>

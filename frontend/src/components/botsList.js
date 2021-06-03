@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { api } from "../api/apiFetch";
+import { Link } from "react-router-dom";
 
 export default class BotsList extends Component {
   constructor(props) {
@@ -236,6 +237,14 @@ export default class BotsList extends Component {
                 >
                   {item.name}
                 </a>
+                <Link
+                  to={{
+                    pathname: `bot/${item.id}/detail`,
+                    fromDashboard: false,
+                  }}
+                >
+                  more
+                </Link>
               </li>
             ))}
           </ul>
@@ -262,6 +271,14 @@ export default class BotsList extends Component {
                   >
                     {item.name}
                   </a>
+                  <Link
+                    to={{
+                      pathname: `bot/${item.id}/detail`,
+                      fromDashboard: false,
+                    }}
+                  >
+                    more
+                  </Link>
                   <p>{item.description}</p>
                 </li>
               ) : (
