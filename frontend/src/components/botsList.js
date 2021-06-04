@@ -289,6 +289,14 @@ export default class BotsList extends Component {
                   >
                     {item.name}
                   </a>
+                  <Link
+                    to={{
+                      pathname: `bot/${item.id}/detail`,
+                      fromDashboard: false,
+                    }}
+                  >
+                    more
+                  </Link>
                 </li>
               )
             )}
