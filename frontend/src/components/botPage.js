@@ -69,8 +69,6 @@ export default class BotPage extends Component {
     if (prevState.deleted !== this.state.deleted) {
       console.log(this.state);
     } else if (prevState.withComment !== this.state.withComment) {
-      console.log(prevState.withComment);
-      console.log(this.state.withComment);
       const urlForComments = `http://127.0.0.1:8000/api/bot/${this.state.botId}/comments`;
       api("GET", urlForComments, false)
         .then((res) => res.json())
@@ -175,7 +173,6 @@ export default class BotPage extends Component {
       nextLink,
       prevLink,
     } = this.state;
-    console.log(this.state);
     let isByUser;
     if (addByUser) {
       isByUser = (
