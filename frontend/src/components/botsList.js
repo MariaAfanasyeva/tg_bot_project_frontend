@@ -239,7 +239,7 @@ export default class BotsList extends Component {
                 </a>
                 <Link
                   to={{
-                    pathname: `bot/${item.id}/detail`,
+                    pathname: `/bot/${item.id}/detail`,
                     fromDashboard: false,
                   }}
                 >
@@ -273,7 +273,7 @@ export default class BotsList extends Component {
                   </a>
                   <Link
                     to={{
-                      pathname: `bot/${item.id}/detail`,
+                      pathname: `/bot/${item.id}/detail`,
                       fromDashboard: false,
                     }}
                   >
@@ -291,7 +291,7 @@ export default class BotsList extends Component {
                   </a>
                   <Link
                     to={{
-                      pathname: `bot/${item.id}/detail`,
+                      pathname: `/bot/${item.id}/detail`,
                       fromDashboard: false,
                     }}
                   >
