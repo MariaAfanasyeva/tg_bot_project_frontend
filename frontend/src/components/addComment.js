@@ -18,42 +18,36 @@ export default class Comment extends Component {
     const data = {
       content: this.state.content,
     };
+    let postResult;
     if (this.props.botId && !this.props.commentId) {
       const url = `http://0.0.0.0:8000/api/bot/${this.props.botId}/comment`;
-      const urlForComments = `http://127.0.0.1:8000/api/bot/${this.props.botId}/comments`;
-      api("POST", url, true, data)
-        .then(
-          api("GET", urlForComments, false)
-            .then((res) => res.json())
-            .then((result) => {
-              this.setState({
-                count: result.count,
-                prevLink: result.previous,
-                nextLink: result.next,
-                comments: result.results,
-              });
-            })
-        )
-        .then(this.props.updateData(false));
+      postResult = api("POST", url, true, data);
     } else if (this.props.commentId) {
       const url = `http://127.0.0.1:8000/api/comment/${this.props.commentId}`;
-      const urlForComments = `http://127.0.0.1:8000/api/bot/${this.props.botId}/comments`;
-      api("PUT", url, true, data)
-        .then(
-          api("GET", urlForComments, false)
-            .then((res) => res.json())
-            .then((result) => {
-              this.setState({
-                count: result.count,
-                prevLink: result.previous,
-                nextLink: result.next,
-                comments: result.results,
-              });
-            })
-        )
-        .then(this.props.updateData(false))
-        .then(this.props.updateStatus(false));
+      postResult = api("PUT", url, true, data);
     }
+    const urlForComments = `http://127.0.0.1:8000/api/bot/${this.props.botId}/comments`;
+    postResult
+      .then(
+        api("GET", urlForComments, false)
+          .then((res) => res.json())
+          .then((result) => {
+            this.setState({
+              count: result.count,
+              prevLink: result.previous,
+              nextLink: result.next,
+              comments: result.results,
+            });
+          })
+      )
+      .then(() => {
+        if (this.props.commentId) {
+          this.props.updateData(false);
+          this.props.updateStatus(false);
+        } else {
+          this.props.updateData(false);
+        }
+      });
   }
 
   updateInputValue(event) {
