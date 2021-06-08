@@ -153,6 +153,18 @@ export default class BotPage extends Component {
             comments: result.results,
           });
         });
+    } else if (prevState.commentID !== this.state.commentID) {
+      const urlForComments = `http://127.0.0.1:8000/api/bot/${this.state.botId}/comments`;
+      api("GET", urlForComments, false)
+        .then((res) => res.json())
+        .then((result) => {
+          this.setState({
+            count: result.count,
+            prevLink: result.previous,
+            nextLink: result.next,
+            comments: result.results,
+          });
+        });
     }
   }
 
