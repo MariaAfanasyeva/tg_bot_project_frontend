@@ -11,7 +11,7 @@ export const refresh = () => {
     mode: "cors",
     body: JSON.stringify(data),
   };
-  fetch("http://127.0.0.1:8000/api/token/refresh/", options)
+  fetch(process.env.REACT_APP_URL_AWS + "/api/token/refresh/", options)
     .then((res) => res.json())
     .then((result) => {
       if (result.code === "token_not_valid") {

@@ -3,6 +3,7 @@ version: '3.7'
 services:
   frontend:
     build: .
+    image: masha29/frontend:latest
     volumes:
       - ${PWD}:/app
       - /app/node_modules

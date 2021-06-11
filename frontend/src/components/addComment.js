@@ -20,13 +20,16 @@ export default class Comment extends Component {
     };
     let postResult;
     if (this.props.botId && !this.props.commentId) {
-      const url = `http://0.0.0.0:8000/api/bot/${this.props.botId}/comment`;
+      const url =
+        process.env.REACT_APP_URL_AWS + `/api/bot/${this.props.botId}/comment`;
       postResult = api("POST", url, true, data);
     } else if (this.props.commentId) {
-      const url = `http://127.0.0.1:8000/api/comment/${this.props.commentId}`;
+      const url =
+        process.env.REACT_APP_URL_AWS + `/api/comment/${this.props.commentId}`;
       postResult = api("PUT", url, true, data);
     }
-    const urlForComments = `http://127.0.0.1:8000/api/bot/${this.props.botId}/comments`;
+    const urlForComments =
+      process.env.REACT_APP_URL_AWS + `/api/bot/${this.props.botId}/comments`;
     postResult
       .then(
         api("GET", urlForComments, false)
@@ -68,7 +71,8 @@ export default class Comment extends Component {
       });
     }
     if (this.props.commentId) {
-      const url = `http://127.0.0.1:8000/api/comment/${this.props.commentId}`;
+      const url =
+        process.env.REACT_APP_URL_AWS + `/api/comment/${this.props.commentId}`;
       api("GET", url, true)
         .then((res) => res.json())
         .then((result) => {

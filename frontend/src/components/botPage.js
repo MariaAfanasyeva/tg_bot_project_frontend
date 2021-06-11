@@ -52,13 +52,15 @@ export default class BotPage extends Component {
   };
 
   handleDelete(commentId) {
-    const urlDel = `http://127.0.0.1:8000/api/comment/${commentId}`;
+    const urlDel = process.env.REACT_APP_URL_AWS + `/api/comment/${commentId}`;
     api("DELETE", urlDel, true).then((res) => {
       if (res.ok === true) {
         this.setState({
           deleted: true,
         });
-        const url = `http://127.0.0.1:8000/api/bot/${this.state.botId}/comments`;
+        const url =
+          process.env.REACT_APP_URL_AWS +
+          `/api/bot/${this.state.botId}/comments`;
         api("GET", url, false)
           .then((res) => res.json())
           .then(
@@ -85,7 +87,7 @@ export default class BotPage extends Component {
       const token = localStorage.getItem("access_token");
       const decodedToken = jwt.decode(token);
       const userId = decodedToken.user_id;
-      const url = `http://127.0.0.1:8000/api/user/${userId}/info`;
+      const url = process.env.REACT_APP_URL_AWS + `/api/user/${userId}/info`;
       api("GET", url, false)
         .then((res) => res.json())
         .then((result) => {
@@ -94,8 +96,10 @@ export default class BotPage extends Component {
           });
         });
     }
-    const url = `http://127.0.0.1:8000/api/detail/${this.state.botId}`;
-    const urlForComments = `http://127.0.0.1:8000/api/bot/${this.state.botId}/comments`;
+    const url =
+      process.env.REACT_APP_URL_AWS + `/api/detail/${this.state.botId}`;
+    const urlForComments =
+      process.env.REACT_APP_URL_AWS + `/api/bot/${this.state.botId}/comments`;
     api("GET", urlForComments, false)
       .then((res) => res.json())
       .then((result) => {
@@ -130,7 +134,8 @@ export default class BotPage extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.withComment !== this.state.withComment) {
-      const urlForComments = `http://127.0.0.1:8000/api/bot/${this.state.botId}/comments`;
+      const urlForComments =
+        process.env.REACT_APP_URL_AWS + `/api/bot/${this.state.botId}/comments`;
       api("GET", urlForComments, false)
         .then((res) => res.json())
         .then((result) => {
@@ -142,7 +147,8 @@ export default class BotPage extends Component {
           });
         });
     } else if (prevState.count !== this.state.count) {
-      const urlForComments = `http://127.0.0.1:8000/api/bot/${this.state.botId}/comments`;
+      const urlForComments =
+        process.env.REACT_APP_URL_AWS + `/api/bot/${this.state.botId}/comments`;
       api("GET", urlForComments, false)
         .then((res) => res.json())
         .then((result) => {
@@ -154,7 +160,8 @@ export default class BotPage extends Component {
           });
         });
     } else if (prevState.commentID !== this.state.commentID) {
-      const urlForComments = `http://127.0.0.1:8000/api/bot/${this.state.botId}/comments`;
+      const urlForComments =
+        process.env.REACT_APP_URL_AWS + `/api/bot/${this.state.botId}/comments`;
       api("GET", urlForComments, false)
         .then((res) => res.json())
         .then((result) => {

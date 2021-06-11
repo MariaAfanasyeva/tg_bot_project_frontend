@@ -17,14 +17,14 @@ export default class UserPage extends Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
   handleDelete(bot_id) {
-    const urlDel = `http://127.0.0.1:8000/api/delete/${bot_id}`;
+    const urlDel = process.env.REACT_APP_URL_AWS + `/api/delete/${bot_id}`;
     api("DELETE", urlDel, true).then((res) => {
       if (res.ok === true) {
         this.setState({
           deleted: true,
         });
         const userId = this.props.match.params.id;
-        const url = `http://127.0.0.1:8000/api/user/${userId}/bots`;
+        const url = process.env.REACT_APP_URL_AWS + `/api/user/${userId}/bots`;
         api("GET", url, false)
           .then((res) => res.json())
           .then(
@@ -47,7 +47,8 @@ export default class UserPage extends Component {
 
   componentDidMount() {
     const userId = this.props.match.params.id;
-    const url = `http://127.0.0.1:8000/api/user/${userId}/bots`;
+    console.log(userId);
+    const url = process.env.REACT_APP_URL_AWS + `/api/user/${userId}/bots`;
     api("GET", url, false)
       .then((res) => res.json())
       .then(
@@ -104,9 +105,10 @@ export default class UserPage extends Component {
 
   render() {
     const { bots, nextLink, prevLink, error } = this.state;
+    console.log(!bots);
     if (error) {
       return <p>Error {error.message}</p>;
-    } else if (!bots) {
+    } else if (bots.length === 0) {
       return (
         <div>
           <h2 className="text-center">You haven't any bots yet</h2>
