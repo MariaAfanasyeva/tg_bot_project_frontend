@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { api } from "../api/apiFetch";
+import { Link } from "react-router-dom";
 
 export default class BotsList extends Component {
   constructor(props) {
@@ -43,7 +44,7 @@ export default class BotsList extends Component {
     const id = this.props.match.params.id;
     const inpVal = this.props.match.params.inputValue;
     if (id === undefined || id === null) {
-      let url = "http://127.0.0.1:8000/api/bots";
+      let url = process.env.REACT_APP_URL_AWS + "/api/bots";
       api("GET", url, false)
         .then((res) => res.json())
         .then(
@@ -63,7 +64,7 @@ export default class BotsList extends Component {
           }
         );
     } else if (id !== undefined) {
-      let url = `http://127.0.0.1:8000/api/category/${id}/bots`;
+      let url = process.env.REACT_APP_URL_AWS + `/api/category/${id}/bots`;
       api("GET", url, true)
         .then((res) => res.json())
         .then(
@@ -83,7 +84,7 @@ export default class BotsList extends Component {
           }
         );
     } else {
-      let url = `http://127.0.0.1:8000/api/bots?search=${inpVal}`;
+      let url = process.env.REACT_APP_URL_AWS + `/api/bots?search=${inpVal}`;
       api("GET", url, false)
         .then((res) => res.json())
         .then(
@@ -110,7 +111,7 @@ export default class BotsList extends Component {
       this.props.match.params.id !== undefined
     ) {
       const id = this.props.match.params.id;
-      let url = `http://127.0.0.1:8000/api/category/${id}/bots`;
+      let url = process.env.REACT_APP_URL_AWS + `/api/category/${id}/bots`;
       api("GET", url, true)
         .then((res) => res.json())
         .then(
@@ -134,7 +135,7 @@ export default class BotsList extends Component {
       this.props.match.params.id === undefined &&
       this.props.match.params.inputValue === undefined
     ) {
-      let url = `http://127.0.0.1:8000/api/bots`;
+      let url = process.env.REACT_APP_URL_AWS + `/api/bots`;
       api("GET", url, false)
         .then((res) => res.json())
         .then(
@@ -159,7 +160,7 @@ export default class BotsList extends Component {
       this.props.match.params.inputValue !== undefined
     ) {
       const inpVal = this.props.match.params.inputValue;
-      let url = `http://127.0.0.1:8000/api/bots?search=${inpVal}`;
+      let url = process.env.REACT_APP_URL_AWS + `/api/bots?search=${inpVal}`;
       api("GET", url, false)
         .then((res) => res.json())
         .then(
@@ -236,6 +237,14 @@ export default class BotsList extends Component {
                 >
                   {item.name}
                 </a>
+                <Link
+                  to={{
+                    pathname: `/bot/${item.id}/detail`,
+                    fromDashboard: false,
+                  }}
+                >
+                  more
+                </Link>
               </li>
             ))}
           </ul>
@@ -262,6 +271,14 @@ export default class BotsList extends Component {
                   >
                     {item.name}
                   </a>
+                  <Link
+                    to={{
+                      pathname: `/bot/${item.id}/detail`,
+                      fromDashboard: false,
+                    }}
+                  >
+                    more
+                  </Link>
                   <p>{item.description}</p>
                 </li>
               ) : (
@@ -272,6 +289,14 @@ export default class BotsList extends Component {
                   >
                     {item.name}
                   </a>
+                  <Link
+                    to={{
+                      pathname: `/bot/${item.id}/detail`,
+                      fromDashboard: false,
+                    }}
+                  >
+                    more
+                  </Link>
                 </li>
               )
             )}

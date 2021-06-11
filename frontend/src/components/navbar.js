@@ -40,11 +40,14 @@ class Navbar extends Component {
   componentDidMount() {
     if (localStorage.getItem("access_token")) {
       const token = localStorage.getItem("access_token");
-      const decodedToken = jwt.decode(token);
       if (token === "undefined") {
         refresh();
       } else {
-        const url = `http://127.0.0.1:8000/api/user/${decodedToken.user_id}/info`;
+        const decodedToken = jwt.decode(token);
+        const url =
+          process.env.REACT_APP_URL_AWS +
+          `/api/user/${decodedToken.user_id}/info`;
+        console.log(url);
         api("GET", url, false)
           .then((res) => res.json())
           .then((result) => {
@@ -56,7 +59,7 @@ class Navbar extends Component {
           });
       }
     }
-    const url = "http://127.0.0.1:8000/api/category";
+    const url = process.env.REACT_APP_URL_AWS + "/api/category";
     api("GET", url, false)
       .then((res) => res.json())
       .then(
@@ -77,7 +80,10 @@ class Navbar extends Component {
       if (localStorage.getItem("access_token")) {
         const token = localStorage.getItem("access_token");
         const decodedToken = jwt.decode(token);
-        const url = `http://127.0.0.1:8000/api/user/${decodedToken.user_id}/info`;
+        console.log(decodedToken);
+        const url =
+          process.env.REACT_APP_URL_AWS +
+          `/api/user/${decodedToken.user_id}/info`;
         api("GET", url, false)
           .then((res) => res.json())
           .then((result) => {
@@ -129,7 +135,7 @@ class Navbar extends Component {
                     <Link
                       className="nav-item nav-link"
                       to={{
-                        pathname: `/category/${category.id}/bots`,
+                        pathname: `/category/${category.id}/bots/`,
                         fromDashboard: false,
                       }}
                     >
@@ -147,7 +153,7 @@ class Navbar extends Component {
                   onChange={this.updateInputValue}
                 />
                 <Link
-                  to={{ pathname: `/bots/search=${this.state.inputValue}` }}
+                  to={{ pathname: `/bots/search=${this.state.inputValue}/` }}
                 >
                   <button
                     className="btn btn-outline-success my-2 my-sm-0"

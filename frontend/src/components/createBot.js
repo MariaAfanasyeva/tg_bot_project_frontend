@@ -29,14 +29,16 @@ export default class Create extends Component {
       link: this.state.link,
     };
     if (!this.props.match.params.bot_id) {
-      const url = "http://127.0.0.1:8000/api/create";
+      const url = process.env.REACT_APP_URL_AWS + "/api/create";
       api("POST", url, true, data)
         .then((res) => res.json())
         .then((result) => {
           this.props.history.push(`/user/${this.state.userId}/info`);
         });
     } else {
-      const url = `http://127.0.0.1:8000/api/update/${this.props.match.params.bot_id}`;
+      const url =
+        process.env.REACT_APP_URL_AWS +
+        `/api/update/${this.props.match.params.bot_id}`;
       api("PUT", url, true, data).then((result) => {
         this.props.history.push(`/user/${this.state.userId}/info`);
       });
@@ -68,7 +70,7 @@ export default class Create extends Component {
   }
 
   componentDidMount() {
-    const url = "http://127.0.0.1:8000/api/category";
+    const url = process.env.REACT_APP_URL_AWS + "/api/category";
     if (localStorage.getItem("access_token")) {
       const token = localStorage.getItem("access_token");
       const decodedToken = jwt.decode(token);
@@ -78,7 +80,9 @@ export default class Create extends Component {
       });
     }
     if (this.props.match.params.bot_id) {
-      const url = `http://127.0.0.1:8000/api/detail/${this.props.match.params.bot_id}`;
+      const url =
+        process.env.REACT_APP_URL_AWS +
+        `/api/detail/${this.props.match.params.bot_id}`;
       api("GET", url, false)
         .then((res) => res.json())
         .then(
