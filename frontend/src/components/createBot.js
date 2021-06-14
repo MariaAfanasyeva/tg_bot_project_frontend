@@ -31,9 +31,10 @@ export default class Create extends Component {
     if (!this.props.match.params.bot_id) {
       const url = process.env.REACT_APP_URL_AWS + "/api/create";
       api("POST", url, true, data).then((res) => {
-        console.log(res);
         if (!res.ok) {
-          console.log("hi");
+          this.setState({
+            message: "Invalid link",
+          });
           this.props.history.push(`/user/${this.state.userId}/create/bot`);
         } else {
           this.props.history.push(`/user/${this.state.userId}/info`);
@@ -123,11 +124,22 @@ export default class Create extends Component {
   }
 
   render() {
-    const { categories } = this.state;
+    const { categories, message } = this.state;
     const bot_id = this.props.match.params.bot_id;
+    let alert;
+    if (message) {
+      alert = (
+        <div className="alert alert-danger" role="alert">
+          {message}
+        </div>
+      );
+    } else {
+      alert = <span></span>;
+    }
     if (!bot_id) {
       return (
         <div className="container">
+          {alert}
           <form>
             <div className="form-group">
               <label>Bot name</label>
@@ -194,6 +206,7 @@ export default class Create extends Component {
     } else {
       return (
         <div className="container">
+          {alert}
           <form>
             <div className="form-group">
               <label>Bot name</label>
