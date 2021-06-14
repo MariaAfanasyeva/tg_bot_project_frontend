@@ -47,7 +47,6 @@ class Navbar extends Component {
         const url =
           process.env.REACT_APP_URL_AWS +
           `/api/user/${decodedToken.user_id}/info`;
-        console.log(url);
         api("GET", url, false)
           .then((res) => res.json())
           .then((result) => {
