@@ -47,7 +47,6 @@ export default class UserPage extends Component {
 
   componentDidMount() {
     const userId = this.props.match.params.id;
-    console.log(userId);
     const url = process.env.REACT_APP_URL_AWS + `/api/user/${userId}/bots`;
     api("GET", url, false)
       .then((res) => res.json())
@@ -105,7 +104,6 @@ export default class UserPage extends Component {
 
   render() {
     const { bots, nextLink, prevLink, error } = this.state;
-    console.log(!bots);
     if (error) {
       return <p>Error {error.message}</p>;
     } else if (bots.length === 0) {
