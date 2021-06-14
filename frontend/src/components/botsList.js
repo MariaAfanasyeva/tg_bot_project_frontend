@@ -15,30 +15,8 @@ export default class BotsList extends Component {
       next_link: "",
     };
 
-    this.handleClick = this.handleClick.bind(this);
     this.nextPage = this.nextPage.bind(this);
     this.prevPage = this.prevPage.bind(this);
-  }
-
-  handleClick(item, event) {
-    event.preventDefault();
-    if (this.state.selectedItems.includes(item.id)) {
-      const index = this.state.selectedItems.indexOf(item.id);
-      delete this.state.selectedItems[index];
-      this.setState((state) => {
-        return {
-          isSelected: !this.state.isSelected,
-          selectedItems: this.state.selectedItems,
-        };
-      });
-    } else {
-      this.setState((state) => {
-        return {
-          isSelected: !this.state.isSelected,
-          selectedItems: [this.state.selectedItems, item.id],
-        };
-      });
-    }
   }
 
   componentDidMount() {
@@ -215,14 +193,7 @@ export default class BotsList extends Component {
   };
 
   render() {
-    const {
-      error,
-      isLoaded,
-      items,
-      selectedItems,
-      prev_link,
-      next_link,
-    } = this.state;
+    const { error, isLoaded, items, prev_link, next_link } = this.state;
     if (error) {
       return <p>Error {error.message}</p>;
     } else if (!isLoaded) {
