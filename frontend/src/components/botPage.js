@@ -262,7 +262,7 @@ export default class BotPage extends Component {
           <div className="d-flex justify-content-center container-md w-75 p-3 h-75">
             <div className="card text-center my-4 w-100 h-100">
               <div className="card-header">{category}</div>
-              <div className="card-body">
+              <div className="card-body w-100 h-100">
                 <h4 className="card-title">
                   <a href={link}>{name}</a>
                 </h4>
@@ -272,8 +272,8 @@ export default class BotPage extends Component {
                 <p className="text-left">
                   <h4>Comments:</h4>
                 </p>
-                <div className="container align-self-lg-end">
-                  <div className="container w-75">
+                <div className="text-center container-md w-75 h-75">
+                  <div className="container-md">
                     <div className="row">
                       {comments.map((comment) =>
                         comment.author === this.state.username ? (
