@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { api } from "../api/apiFetch";
 import Comment from "./addComment";
 import jwt from "jsonwebtoken";
+import Like from "./Like";
 
 export default class BotPage extends Component {
   constructor(props) {
@@ -264,7 +265,8 @@ export default class BotPage extends Component {
               <div className="card-header">{category}</div>
               <div className="card-body w-100 h-100">
                 <h4 className="card-title">
-                  <a href={link}>{name}</a>
+                  <a href={link}>{name}</a>{" "}
+                  <Like botId={this.state.botId} botName={name} />
                 </h4>
                 <div className="font-italic pb-4"> by {author}</div>
                 <p className="card-text my-4">{description}</p>
