@@ -6,30 +6,57 @@ export default class Like extends Component {
     super(props);
     this.state = {
       liked: false,
+      likeId: "",
     };
     this.handleClick = this.handleClick.bind(this);
   }
   handleClick() {
-    this.setState({
-      liked: !this.state.liked,
-    });
-    const likeUrl =
-      process.env.REACT_APP_URL_AWS + `/api/bot/${this.props.botId}/like`;
-    api("POST", likeUrl, true, {}).then((res) => console.log(res));
+    if (this.state.liked === false) {
+      this.setState({
+        liked: !this.state.liked,
+      });
+      const likeUrl =
+        process.env.REACT_APP_URL_AWS + `/api/bot/${this.props.botId}/like`;
+      api("POST", likeUrl, true, {})
+        .then((res) => res.json())
+        .then((result) => {
+          this.setState({
+            likeId: result.id,
+          });
+        });
+    } else {
+      this.setState({
+        liked: !this.state.liked,
+      });
+      const deleteLikeUrl =
+        process.env.REACT_APP_URL_AWS + `/api/like/${this.state.likeId}`;
+      api("DELETE", deleteLikeUrl, true, {});
+    }
   }
   componentDidMount() {
     if (localStorage.getItem("access_token")) {
       const token = localStorage.getItem("access_token");
       const decodedToken = jwt.decode(token);
       const userId = decodedToken.user_id;
+      const url = process.env.REACT_APP_URL_AWS + `/api/user/${userId}/info`;
+      let username;
+      api("GET", url, false)
+        .then((res) => res.json())
+        .then((result) => {
+          username = result.username;
+        });
       const likesUrl = process.env.REACT_APP_URL_AWS + `/api/likes`;
       api("GET", likesUrl, true)
         .then((res) => res.json())
         .then((result) => {
           result.map((like) => {
-            if (like.to_bot === this.props.botName && like.author === userId) {
+            if (
+              like.to_bot === this.props.botName &&
+              like.author === username
+            ) {
               this.setState({
                 liked: true,
+                likeId: like.id,
               });
             }
           });
@@ -42,6 +69,13 @@ export default class Like extends Component {
         const token = localStorage.getItem("access_token");
         const decodedToken = jwt.decode(token);
         const userId = decodedToken.user_id;
+        const url = process.env.REACT_APP_URL_AWS + `/api/user/${userId}/info`;
+        let username;
+        api("GET", url, false)
+          .then((res) => res.json())
+          .then((result) => {
+            username = result.username;
+          });
         const likesUrl = process.env.REACT_APP_URL_AWS + `/api/likes`;
         api("GET", likesUrl, true)
           .then((res) => res.json())
@@ -49,10 +83,10 @@ export default class Like extends Component {
             result.map((like) => {
               if (
                 like.to_bot === this.props.botName &&
-                like.author === userId
+                like.author === username
               ) {
                 this.setState({
-                  liked: true,
+                  likeId: like.id,
                 });
               }
             });
