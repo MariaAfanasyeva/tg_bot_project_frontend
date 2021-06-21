@@ -30,16 +30,20 @@ export default class Create extends Component {
     };
     if (!this.props.match.params.bot_id) {
       const url = process.env.REACT_APP_URL_AWS + "/api/create";
-      api("POST", url, true, data).then((res) => {
-        if (!res.ok) {
-          this.setState({
-            message: "Invalid link",
-          });
-          this.props.history.push(`/user/${this.state.userId}/create/bot`);
-        } else {
-          this.props.history.push(`/user/${this.state.userId}/info`);
-        }
-      });
+      api("POST", url, true, data)
+        .then((res) => {
+          if (!res.ok) {
+            const result = res.json();
+            console.log(result.value);
+            this.setState({
+              message: "Invalid link",
+            });
+            // this.props.history.push(`/user/${this.state.userId}/create/bot`);
+          } else {
+            this.props.history.push(`/user/${this.state.userId}/info`);
+          }
+        })
+        .then((result) => console.log(result));
     } else {
       const url =
         process.env.REACT_APP_URL_AWS +
