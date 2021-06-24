@@ -31,11 +31,21 @@ export default class Create extends Component {
     if (!this.props.match.params.bot_id) {
       const url = process.env.REACT_APP_URL_AWS + "/api/create";
       api("POST", url, true, data).then((res) => {
-        if (!res.ok) {
+        if (res.status === 500) {
           this.setState({
             message: "Invalid link",
           });
           this.props.history.push(`/user/${this.state.userId}/create/bot`);
+        } else if (res.status === 400) {
+          const result = res.json();
+          let message_text;
+          result.then((result) => {
+            message_text = result.link[0];
+            this.setState({
+              message: message_text,
+            });
+            this.props.history.push(`/user/${this.state.userId}/create/bot`);
+          });
         } else {
           this.props.history.push(`/user/${this.state.userId}/info`);
         }

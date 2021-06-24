@@ -7,12 +7,3 @@ RUN npm install --silent
 RUN npm install react-scripts@3.4.1 -g --silent
 COPY . ./
 CMD ["npm", "start"]
-#RUN npm run build
-#RUN npm start
-#RUN npm start
-#FROM nginx:stable-alpine
-#WORKDIR /usr/share/nginx/html
-#RUN rm -rf ./*
-#COPY --from=builder /app/build .
-#
-#ENTRYPOINT ["nginx", "-g", "daemon off;"]

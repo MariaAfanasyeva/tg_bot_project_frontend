@@ -79,7 +79,6 @@ class Navbar extends Component {
       if (localStorage.getItem("access_token")) {
         const token = localStorage.getItem("access_token");
         const decodedToken = jwt.decode(token);
-        console.log(decodedToken);
         const url =
           process.env.REACT_APP_URL_AWS +
           `/api/user/${decodedToken.user_id}/info`;
