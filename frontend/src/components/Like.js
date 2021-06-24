@@ -63,37 +63,6 @@ export default class Like extends Component {
         });
     }
   }
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if (prevState.liked !== this.state.liked) {
-      if (localStorage.getItem("access_token")) {
-        const token = localStorage.getItem("access_token");
-        const decodedToken = jwt.decode(token);
-        const userId = decodedToken.user_id;
-        const url = process.env.REACT_APP_URL_AWS + `/api/user/${userId}/info`;
-        let username;
-        api("GET", url, false)
-          .then((res) => res.json())
-          .then((result) => {
-            username = result.username;
-          });
-        const likesUrl = process.env.REACT_APP_URL_AWS + `/api/likes`;
-        api("GET", likesUrl, true)
-          .then((res) => res.json())
-          .then((result) => {
-            result.map((like) => {
-              if (
-                like.to_bot === this.props.botName &&
-                like.author === username
-              ) {
-                this.setState({
-                  likeId: like.id,
-                });
-              }
-            });
-          });
-      }
-    }
-  }
 
   render() {
     const { liked } = this.state;
