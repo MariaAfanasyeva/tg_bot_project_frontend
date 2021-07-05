@@ -17,7 +17,7 @@ export default class UserPage extends Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
   handleDelete(bot_id) {
-    const urlDel = process.env.REACT_APP_URL_AWS + `/api/delete/${bot_id}`;
+    const urlDel = process.env.REACT_APP_URL_AWS + `/api/bot/${bot_id}`;
     api("DELETE", urlDel, true).then((res) => {
       if (res.ok === true) {
         this.setState({

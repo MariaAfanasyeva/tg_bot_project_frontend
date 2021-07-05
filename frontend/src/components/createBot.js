@@ -29,7 +29,7 @@ export default class Create extends Component {
       link: this.state.link,
     };
     if (!this.props.match.params.bot_id) {
-      const url = process.env.REACT_APP_URL_AWS + "/api/create";
+      const url = process.env.REACT_APP_URL_AWS + "/api/bots";
       api("POST", url, true, data).then((res) => {
         if (res.status === 500) {
           this.setState({
@@ -53,7 +53,7 @@ export default class Create extends Component {
     } else {
       const url =
         process.env.REACT_APP_URL_AWS +
-        `/api/update/${this.props.match.params.bot_id}`;
+        `/api/bot/${this.props.match.params.bot_id}`;
       api("PUT", url, true, data).then((result) => {
         this.props.history.push(`/user/${this.state.userId}/info`);
       });
@@ -97,7 +97,7 @@ export default class Create extends Component {
     if (this.props.match.params.bot_id) {
       const url =
         process.env.REACT_APP_URL_AWS +
-        `/api/detail/${this.props.match.params.bot_id}`;
+        `/api/bot/${this.props.match.params.bot_id}`;
       api("GET", url, false)
         .then((res) => res.json())
         .then(

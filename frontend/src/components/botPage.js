@@ -97,8 +97,7 @@ export default class BotPage extends Component {
           });
         });
     }
-    const url =
-      process.env.REACT_APP_URL_AWS + `/api/detail/${this.state.botId}`;
+    const url = process.env.REACT_APP_URL_AWS + `/api/bot/${this.state.botId}`;
     const urlForComments =
       process.env.REACT_APP_URL_AWS + `/api/bot/${this.state.botId}/comments`;
     api("GET", urlForComments, false)
