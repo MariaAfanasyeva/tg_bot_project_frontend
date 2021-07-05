@@ -28,11 +28,12 @@ export default class BotsList extends Component {
         .then((res) => res.json())
         .then(
           (result) => {
+            console.log(result);
             this.setState({
               isLoaded: true,
               items: result.results,
               prev_link: null,
-              next_link: result.next,
+              next_link: process.env.REACT_APP_URL_AWS + result.next,
             });
           },
           (error) => {
@@ -52,7 +53,7 @@ export default class BotsList extends Component {
               isLoaded: true,
               items: result.results,
               prev_link: null,
-              next_link: result.next,
+              next_link: process.env.REACT_APP_URL_AWS + result.next,
             });
           },
           (error) => {
@@ -72,7 +73,7 @@ export default class BotsList extends Component {
               isLoaded: true,
               items: result.results,
               prev_link: null,
-              next_link: result.next,
+              next_link: process.env.REACT_APP_URL_AWS + result.next,
             });
           },
           (error) => {
@@ -100,7 +101,7 @@ export default class BotsList extends Component {
               isLoaded: true,
               items: result.results,
               prev_link: null,
-              next_link: result.next,
+              next_link: process.env.REACT_APP_URL_AWS + result.next,
             });
           },
           (error) => {
@@ -124,7 +125,7 @@ export default class BotsList extends Component {
               isLoaded: true,
               items: result.results,
               prev_link: null,
-              next_link: result.next,
+              next_link: process.env.REACT_APP_URL_AWS + result.next,
             });
           },
           (error) => {
@@ -149,7 +150,7 @@ export default class BotsList extends Component {
               isLoaded: true,
               items: result.results,
               prev_link: null,
-              next_link: result.next,
+              next_link: process.env.REACT_APP_URL_AWS + result.next,
             });
           },
           (error) => {
@@ -168,10 +169,16 @@ export default class BotsList extends Component {
       fetch(link)
         .then((res) => res.json())
         .then((result) => {
+          let prev_page;
+          if (result.prev === undefined) {
+            prev_page = null;
+          } else {
+            prev_page = process.env.REACT_APP_URL_AWS + result.prev;
+          }
           this.setState({
             items: result.results,
-            prev_link: result.prev,
-            next_link: result.next,
+            prev_link: prev_page,
+            next_link: process.env.REACT_APP_URL_AWS + result.next,
           });
         });
     }
@@ -183,10 +190,16 @@ export default class BotsList extends Component {
       fetch(link)
         .then((res) => res.json())
         .then((result) => {
+          let next_page;
+          if (result.next === undefined) {
+            next_page = null;
+          } else {
+            next_page = process.env.REACT_APP_URL_AWS + result.next;
+          }
           this.setState({
             items: result.results,
-            prev_link: result.prev,
-            next_link: result.next,
+            prev_link: process.env.REACT_APP_URL_AWS + result.prev,
+            next_link: next_page,
           });
         });
     }
