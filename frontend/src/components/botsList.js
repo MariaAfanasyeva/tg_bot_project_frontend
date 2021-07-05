@@ -170,7 +170,7 @@ export default class BotsList extends Component {
         .then((result) => {
           this.setState({
             items: result.results,
-            prev_link: result.previous,
+            prev_link: result.prev,
             next_link: result.next,
           });
         });
@@ -185,7 +185,7 @@ export default class BotsList extends Component {
         .then((result) => {
           this.setState({
             items: result.results,
-            prev_link: result.previous,
+            prev_link: result.prev,
             next_link: result.next,
           });
         });
