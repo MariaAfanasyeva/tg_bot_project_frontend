@@ -53,24 +53,23 @@ export default class BotPage extends Component {
   };
 
   handleDelete(commentId) {
-    const urlDel = process.env.REACT_APP_URL_AWS + `/api/comment/${commentId}`;
+    const urlDel = process.env.REACT_APP_URL_AWS + `/comment/${commentId}`;
     api("DELETE", urlDel, true).then((res) => {
       if (res.ok === true) {
         this.setState({
           deleted: true,
         });
         const url =
-          process.env.REACT_APP_URL_AWS +
-          `/api/bot/${this.state.botId}/comments`;
+          process.env.REACT_APP_URL_AWS + `/bot/${this.state.botId}/comment`;
         api("GET", url, false)
           .then((res) => res.json())
           .then(
             (result) => {
               this.setState({
                 comments: result.results,
-                prevLink: result.previous,
+                prevLink: result.prev,
                 nextLink: result.next,
-                count: result.count,
+                count: result.totalElements,
               });
             },
             (error) => {
@@ -87,8 +86,11 @@ export default class BotPage extends Component {
     if (localStorage.getItem("access_token")) {
       const token = localStorage.getItem("access_token");
       const decodedToken = jwt.decode(token);
-      const userId = decodedToken.user_id;
-      const url = process.env.REACT_APP_URL_AWS + `/api/user/${userId}/info`;
+      const userId = decodedToken.sub;
+      this.setState({
+        userID: userId,
+      });
+      const url = process.env.REACT_APP_URL_AWS + `/user/${userId}/info`;
       api("GET", url, false)
         .then((res) => res.json())
         .then((result) => {
@@ -97,16 +99,16 @@ export default class BotPage extends Component {
           });
         });
     }
-    const url = process.env.REACT_APP_URL_AWS + `/api/bot/${this.state.botId}`;
+    const url = process.env.REACT_APP_URL_AWS + `/bot/${this.state.botId}`;
     const urlForComments =
-      process.env.REACT_APP_URL_AWS + `/api/bot/${this.state.botId}/comments`;
+      process.env.REACT_APP_URL_AWS + `/bot/${this.state.botId}/comment`;
     api("GET", urlForComments, false)
       .then((res) => res.json())
       .then((result) => {
         this.setState({
-          count: result.count,
+          count: result.totalElements,
           comments: result.results,
-          prevLink: result.previous,
+          prevLink: result.prev,
           nextLink: result.next,
         });
       });
@@ -120,7 +122,7 @@ export default class BotPage extends Component {
             description: result.description,
             link: result.link,
             author: result.author,
-            addByUser: result.addByUser,
+            addByUser: result.add_by_user,
             withComment: false,
           });
         },
@@ -135,39 +137,38 @@ export default class BotPage extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevState.withComment !== this.state.withComment) {
       const urlForComments =
-        process.env.REACT_APP_URL_AWS + `/api/bot/${this.state.botId}/comments`;
+        process.env.REACT_APP_URL_AWS + `/bot/${this.state.botId}/comment`;
       api("GET", urlForComments, false)
         .then((res) => res.json())
         .then((result) => {
           this.setState({
-            count: result.count,
-            prevLink: result.previous,
+            prevLink: result.prev,
             nextLink: result.next,
             comments: result.results,
           });
         });
     } else if (prevState.count !== this.state.count) {
       const urlForComments =
-        process.env.REACT_APP_URL_AWS + `/api/bot/${this.state.botId}/comments`;
+        process.env.REACT_APP_URL_AWS + `/bot/${this.state.botId}/comment`;
       api("GET", urlForComments, false)
         .then((res) => res.json())
         .then((result) => {
           this.setState({
-            count: result.count,
-            prevLink: result.previous,
+            count: result.totalElements,
+            prevLink: result.prev,
             nextLink: result.next,
             comments: result.results,
           });
         });
     } else if (prevState.commentID !== this.state.commentID) {
       const urlForComments =
-        process.env.REACT_APP_URL_AWS + `/api/bot/${this.state.botId}/comments`;
+        process.env.REACT_APP_URL_AWS + `/bot/${this.state.botId}/comment`;
       api("GET", urlForComments, false)
         .then((res) => res.json())
         .then((result) => {
           this.setState({
-            count: result.count,
-            prevLink: result.previous,
+            count: result.totalElements,
+            prevLink: result.prev,
             nextLink: result.next,
             comments: result.results,
           });
@@ -183,7 +184,7 @@ export default class BotPage extends Component {
         .then((result) => {
           this.setState({
             comments: result.results,
-            prevLink: result.previous,
+            prevLink: result.prev,
             nextLink: result.next,
           });
         });
@@ -198,7 +199,7 @@ export default class BotPage extends Component {
         .then((result) => {
           this.setState({
             comments: result.results,
-            prevLink: result.previous,
+            prevLink: result.prev,
             nextLink: result.next,
           });
         });
@@ -265,7 +266,7 @@ export default class BotPage extends Component {
               <div className="card-body w-100 h-100">
                 <h4 className="card-title">
                   <a href={link}>{name}</a>{" "}
-                  <Like botId={this.state.botId} botName={name} />
+                  {/*<Like botId={this.state.botId} botName={name} />*/}
                 </h4>
                 <div className="font-italic pb-4"> by {author}</div>
                 <p className="card-text my-4">{description}</p>
@@ -277,15 +278,17 @@ export default class BotPage extends Component {
                   <div className="container-md">
                     <div className="row">
                       {comments.map((comment) =>
-                        comment.author === this.state.username ? (
+                        comment.add_by_user === this.state.userID ? (
                           <div
                             className="card mx-3 py-3 col"
                             style={{ width: "18rem" }}
                           >
                             <div className="card-body">
-                              <h5 className="card-title">{comment.author}</h5>
+                              <h5 className="card-title">
+                                {comment.add_by_user}
+                              </h5>
                               <h6 className="card-subtitle mb-2 text-muted">
-                                {comment.creation_date}
+                                {comment.create_time}
                               </h6>
                               <p className="card-text">{comment.content}</p>
                               <a
@@ -332,9 +335,11 @@ export default class BotPage extends Component {
                             style={{ width: "18rem" }}
                           >
                             <div className="card-body">
-                              <h5 className="card-title">{comment.author}</h5>
+                              <h5 className="card-title">
+                                {comment.add_by_user}
+                              </h5>
                               <h6 className="card-subtitle mb-2 text-muted">
-                                {comment.creation_date}
+                                {comment.create_time}
                               </h6>
                               <p className="card-text">{comment.content}</p>
                             </div>

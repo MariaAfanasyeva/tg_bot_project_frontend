@@ -17,14 +17,14 @@ export default class UserPage extends Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
   handleDelete(bot_id) {
-    const urlDel = process.env.REACT_APP_URL_AWS + `/api/bot/${bot_id}`;
+    const urlDel = process.env.REACT_APP_URL_AWS + `/bot/${bot_id}`;
     api("DELETE", urlDel, true).then((res) => {
       if (res.ok === true) {
         this.setState({
           deleted: true,
         });
         const userId = this.props.match.params.id;
-        const url = process.env.REACT_APP_URL_AWS + `/api/user/${userId}/bots`;
+        const url = process.env.REACT_APP_URL_AWS + `/user/${userId}/bots`;
         api("GET", url, false)
           .then((res) => res.json())
           .then(
@@ -32,7 +32,7 @@ export default class UserPage extends Component {
               this.setState({
                 bots: result.results,
                 nextLink: result.next,
-                prevLink: result.previous,
+                prevLink: result.prev,
               });
             },
             (error) => {
@@ -47,7 +47,7 @@ export default class UserPage extends Component {
 
   componentDidMount() {
     const userId = this.props.match.params.id;
-    const url = process.env.REACT_APP_URL_AWS + `/api/user/${userId}/bots`;
+    const url = process.env.REACT_APP_URL_AWS + `/user/${userId}/bots`;
     api("GET", url, false)
       .then((res) => res.json())
       .then(
@@ -55,7 +55,7 @@ export default class UserPage extends Component {
           this.setState({
             bots: result.results,
             nextLink: result.next,
-            prevLink: result.previous,
+            prevLink: result.prev,
           });
         },
         (error) => {
@@ -80,7 +80,7 @@ export default class UserPage extends Component {
         .then((result) => {
           this.setState({
             bots: result.results,
-            prevLink: result.previous,
+            prevLink: result.prev,
             nextLink: result.next,
           });
         });
@@ -95,7 +95,7 @@ export default class UserPage extends Component {
         .then((result) => {
           this.setState({
             bots: result.results,
-            prevLink: result.previous,
+            prevLink: result.prev,
             nextLink: result.next,
           });
         });

@@ -5,12 +5,12 @@ export const api = (method, url, login_required, data = null) => {
   if (localStorage.getItem("access_token")) {
     const token = localStorage.getItem("access_token");
     if (token === "undefined") {
-      refresh();
+      localStorage.removeItem("access_token");
     } else {
       const decodedToken = jwt.decode(token);
       let dateNow = new Date();
       if (decodedToken.exp < dateNow.getTime() / 1000) {
-        refresh();
+        localStorage.removeItem("access_token");
       }
     }
   }

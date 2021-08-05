@@ -30,9 +30,8 @@ export default class SignIn extends Component {
       password: this.state.password,
     };
     login(data).then((result) => {
-      if (result.detail === undefined) {
-        localStorage.setItem("access_token", result.access);
-        localStorage.setItem("refresh_token", result.refresh);
+      if (result.message === undefined) {
+        localStorage.setItem("access_token", result.access_token);
         this.setState({
           isValid: true,
         });
@@ -43,7 +42,7 @@ export default class SignIn extends Component {
       } else {
         this.setState({
           isValid: false,
-          errorMessage: result.detail,
+          errorMessage: result.message,
         });
         this.props.history.push("/login");
       }

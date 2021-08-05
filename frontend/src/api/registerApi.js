@@ -7,5 +7,5 @@ export const register = (data) => {
     mode: "cors",
     body: JSON.stringify(data),
   };
-  return fetch(process.env.REACT_APP_URL_AWS + "/auth/users/", options);
+  return fetch(process.env.REACT_APP_URL_AWS + "/auth/users", options);
 };
