@@ -23,7 +23,7 @@ export default class BotsList extends Component {
     const id = this.props.match.params.id;
     const inpVal = this.props.match.params.inputValue;
     if (id === undefined || id === null) {
-      let url = process.env.REACT_APP_URL_AWS + "/api/bots";
+      let url = process.env.REACT_APP_URL_AWS + "/bots";
       api("GET", url, false)
         .then((res) => res.json())
         .then(
@@ -32,7 +32,7 @@ export default class BotsList extends Component {
               isLoaded: true,
               items: result.results,
               prev_link: null,
-              next_link: result.next,
+              next_link: process.env.REACT_APP_URL_AWS + result.next,
             });
           },
           (error) => {
@@ -43,17 +43,26 @@ export default class BotsList extends Component {
           }
         );
     } else if (id !== undefined) {
-      let url = process.env.REACT_APP_URL_AWS + `/api/category/${id}/bots`;
+      let url = process.env.REACT_APP_URL_AWS + `/category/${id}/bots`;
       api("GET", url, true)
         .then((res) => res.json())
         .then(
           (result) => {
-            this.setState({
-              isLoaded: true,
-              items: result.results,
-              prev_link: null,
-              next_link: result.next,
-            });
+            if (result.next) {
+              this.setState({
+                isLoaded: true,
+                items: result.results,
+                prev_link: null,
+                next_link: process.env.REACT_APP_URL_AWS + result.next,
+              });
+            } else {
+              this.setState({
+                isLoaded: true,
+                items: result.results,
+                prev_link: null,
+                next_link: null,
+              });
+            }
           },
           (error) => {
             this.setState({
@@ -63,7 +72,7 @@ export default class BotsList extends Component {
           }
         );
     } else {
-      let url = process.env.REACT_APP_URL_AWS + `/api/bots?search=${inpVal}`;
+      let url = process.env.REACT_APP_URL_AWS + `/bots?search=${inpVal}`;
       api("GET", url, false)
         .then((res) => res.json())
         .then(
@@ -72,7 +81,7 @@ export default class BotsList extends Component {
               isLoaded: true,
               items: result.results,
               prev_link: null,
-              next_link: result.next,
+              next_link: process.env.REACT_APP_URL_AWS + result.next,
             });
           },
           (error) => {
@@ -91,7 +100,7 @@ export default class BotsList extends Component {
       this.props.match.params.id !== undefined
     ) {
       const id = this.props.match.params.id;
-      let url = process.env.REACT_APP_URL_AWS + `/api/category/${id}/bots`;
+      let url = process.env.REACT_APP_URL_AWS + `/category/${id}/bots`;
       api("GET", url, true)
         .then((res) => res.json())
         .then(
@@ -100,7 +109,7 @@ export default class BotsList extends Component {
               isLoaded: true,
               items: result.results,
               prev_link: null,
-              next_link: result.next,
+              next_link: process.env.REACT_APP_URL_AWS + result.next,
             });
           },
           (error) => {
@@ -115,7 +124,7 @@ export default class BotsList extends Component {
       this.props.match.params.id === undefined &&
       this.props.match.params.inputValue === undefined
     ) {
-      let url = process.env.REACT_APP_URL_AWS + `/api/bots`;
+      let url = process.env.REACT_APP_URL_AWS + `/bots`;
       api("GET", url, false)
         .then((res) => res.json())
         .then(
@@ -124,7 +133,7 @@ export default class BotsList extends Component {
               isLoaded: true,
               items: result.results,
               prev_link: null,
-              next_link: result.next,
+              next_link: process.env.REACT_APP_URL_AWS + result.next,
             });
           },
           (error) => {
@@ -140,7 +149,7 @@ export default class BotsList extends Component {
       this.props.match.params.inputValue !== undefined
     ) {
       const inpVal = this.props.match.params.inputValue;
-      let url = process.env.REACT_APP_URL_AWS + `/api/bots?search=${inpVal}`;
+      let url = process.env.REACT_APP_URL_AWS + `/bots?search=${inpVal}`;
       api("GET", url, false)
         .then((res) => res.json())
         .then(
@@ -149,7 +158,7 @@ export default class BotsList extends Component {
               isLoaded: true,
               items: result.results,
               prev_link: null,
-              next_link: result.next,
+              next_link: process.env.REACT_APP_URL_AWS + result.next,
             });
           },
           (error) => {
@@ -168,10 +177,16 @@ export default class BotsList extends Component {
       fetch(link)
         .then((res) => res.json())
         .then((result) => {
+          let prev_page;
+          if (result.prev === undefined) {
+            prev_page = null;
+          } else {
+            prev_page = process.env.REACT_APP_URL_AWS + result.prev;
+          }
           this.setState({
             items: result.results,
-            prev_link: result.previous,
-            next_link: result.next,
+            prev_link: prev_page,
+            next_link: process.env.REACT_APP_URL_AWS + result.next,
           });
         });
     }
@@ -183,10 +198,16 @@ export default class BotsList extends Component {
       fetch(link)
         .then((res) => res.json())
         .then((result) => {
+          let next_page;
+          if (result.next === undefined) {
+            next_page = null;
+          } else {
+            next_page = process.env.REACT_APP_URL_AWS + result.next;
+          }
           this.setState({
             items: result.results,
-            prev_link: result.previous,
-            next_link: result.next,
+            prev_link: process.env.REACT_APP_URL_AWS + result.prev,
+            next_link: next_page,
           });
         });
     }

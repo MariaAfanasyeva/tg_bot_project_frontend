@@ -23,13 +23,13 @@ export default class Create extends Component {
     event.preventDefault();
     const data = {
       name: this.state.name,
-      category: this.state.category,
+      category_id: this.state.category,
       description: this.state.description,
       author: this.state.author,
       link: this.state.link,
     };
     if (!this.props.match.params.bot_id) {
-      const url = process.env.REACT_APP_URL_AWS + "/api/create";
+      const url = process.env.REACT_APP_URL_AWS + "/bots";
       api("POST", url, true, data).then((res) => {
         if (res.status === 500) {
           this.setState({
@@ -53,7 +53,7 @@ export default class Create extends Component {
     } else {
       const url =
         process.env.REACT_APP_URL_AWS +
-        `/api/update/${this.props.match.params.bot_id}`;
+        `/bot/${this.props.match.params.bot_id}`;
       api("PUT", url, true, data).then((result) => {
         this.props.history.push(`/user/${this.state.userId}/info`);
       });
@@ -85,11 +85,11 @@ export default class Create extends Component {
   }
 
   componentDidMount() {
-    const url = process.env.REACT_APP_URL_AWS + "/api/category";
+    const url = process.env.REACT_APP_URL_AWS + "/category";
     if (localStorage.getItem("access_token")) {
       const token = localStorage.getItem("access_token");
       const decodedToken = jwt.decode(token);
-      const userId = decodedToken.user_id;
+      const userId = decodedToken.sub;
       this.setState({
         userId: userId,
       });
@@ -97,7 +97,7 @@ export default class Create extends Component {
     if (this.props.match.params.bot_id) {
       const url =
         process.env.REACT_APP_URL_AWS +
-        `/api/detail/${this.props.match.params.bot_id}`;
+        `/bot/${this.props.match.params.bot_id}`;
       api("GET", url, false)
         .then((res) => res.json())
         .then(
@@ -179,7 +179,7 @@ export default class Create extends Component {
               >
                 <option></option>
                 {categories.map((category) => {
-                  return <option value={category.name}>{category.name}</option>;
+                  return <option value={category.id}>{category.name}</option>;
                 })}
               </select>
             </div>
@@ -249,7 +249,7 @@ export default class Create extends Component {
               >
                 <option></option>
                 {categories.map((category) => {
-                  return <option value={category.name}>{category.name}</option>;
+                  return <option value={category.id}>{category.name}</option>;
                 })}
               </select>
             </div>

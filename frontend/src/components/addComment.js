@@ -21,23 +21,23 @@ export default class Comment extends Component {
     let postResult;
     if (this.props.botId && !this.props.commentId) {
       const url =
-        process.env.REACT_APP_URL_AWS + `/api/bot/${this.props.botId}/comment`;
+        process.env.REACT_APP_URL_AWS + `/bot/${this.props.botId}/comment`;
       postResult = api("POST", url, true, data);
     } else if (this.props.commentId) {
       const url =
-        process.env.REACT_APP_URL_AWS + `/api/comment/${this.props.commentId}`;
+        process.env.REACT_APP_URL_AWS + `/comment/${this.props.commentId}`;
       postResult = api("PUT", url, true, data);
     }
     const urlForComments =
-      process.env.REACT_APP_URL_AWS + `/api/bot/${this.props.botId}/comments`;
+      process.env.REACT_APP_URL_AWS + `/bot/${this.props.botId}/comment`;
     postResult
       .then(
         api("GET", urlForComments, false)
           .then((res) => res.json())
           .then((result) => {
             this.setState({
-              count: result.count,
-              prevLink: result.previous,
+              count: result.totalElements,
+              prevLink: result.prev,
               nextLink: result.next,
               comments: result.results,
             });
@@ -65,14 +65,14 @@ export default class Comment extends Component {
     if (localStorage.getItem("access_token")) {
       const token = localStorage.getItem("access_token");
       const decodedToken = jwt.decode(token);
-      const userId = decodedToken.user_id;
+      const userId = decodedToken.sub;
       this.setState({
         userId: userId,
       });
     }
     if (this.props.commentId) {
       const url =
-        process.env.REACT_APP_URL_AWS + `/api/comment/${this.props.commentId}`;
+        process.env.REACT_APP_URL_AWS + `/comment/${this.props.commentId}`;
       api("GET", url, true)
         .then((res) => res.json())
         .then((result) => {

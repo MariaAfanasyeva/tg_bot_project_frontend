@@ -45,8 +45,7 @@ class Navbar extends Component {
       } else {
         const decodedToken = jwt.decode(token);
         const url =
-          process.env.REACT_APP_URL_AWS +
-          `/api/user/${decodedToken.user_id}/info`;
+          process.env.REACT_APP_URL_AWS + `/user/${decodedToken.sub}/info`;
         api("GET", url, false)
           .then((res) => res.json())
           .then((result) => {
@@ -58,7 +57,7 @@ class Navbar extends Component {
           });
       }
     }
-    const url = process.env.REACT_APP_URL_AWS + "/api/category";
+    const url = process.env.REACT_APP_URL_AWS + "/category";
     api("GET", url, false)
       .then((res) => res.json())
       .then(
@@ -80,8 +79,7 @@ class Navbar extends Component {
         const token = localStorage.getItem("access_token");
         const decodedToken = jwt.decode(token);
         const url =
-          process.env.REACT_APP_URL_AWS +
-          `/api/user/${decodedToken.user_id}/info`;
+          process.env.REACT_APP_URL_AWS + `/user/${decodedToken.sub}/info`;
         api("GET", url, false)
           .then((res) => res.json())
           .then((result) => {

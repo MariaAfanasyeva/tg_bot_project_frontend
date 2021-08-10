@@ -35,7 +35,7 @@ export default class Register extends Component {
       .then((res) => res.json())
       .then((result) => {
         const resultLength = Object.keys(result).length;
-        if (resultLength !== 3) {
+        if (resultLength !== 6) {
           this.setState({
             is_valid: false,
             error_message: result.email || result.username || result.password,

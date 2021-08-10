@@ -7,8 +7,7 @@ export const login = (data) => {
     mode: "cors",
     body: JSON.stringify(data),
   };
-  return fetch(
-    process.env.REACT_APP_URL_AWS + "/api/token/",
-    options
-  ).then((res) => res.json());
+  return fetch(process.env.REACT_APP_URL_AWS + "/token", options).then((res) =>
+    res.json()
+  );
 };
